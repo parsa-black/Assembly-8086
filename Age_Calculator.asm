@@ -13,6 +13,9 @@ month1  db ?  ; (_X)
 month2  db ?  ; (X_)
 year1   db ?  ; (_X)
 year2   db ?  ; (X_)
+ageD    db ?  ; Day
+ageM    db ?  ; Month
+ageY    db ?  ; Year
 
     
 ENDS
@@ -58,23 +61,6 @@ INT 21H
 SUB AL,48H    ;Convert Asci Value to Decimal
 MOV year1,AL
 
-; Show Year
-MOV DL,0AH    ; New Line
-MOV AH,02H
-INT 21H
-
-MOV DL,0DH    ; Start New Line
-MOV AH,02H
-INT 21H
-
-MOV AH,02H
-MOV DL,year2
-ADD DL,48H
-int 21h
-
-MOV DL,year1
-ADD DL,48H
-int 21h
 
 ;----------------------Month--------------------------
 
@@ -102,22 +88,6 @@ SUB AL,48H    ;Convert Asci Value to Decimal
 MOV month1,AL
 
 
-MOV DL,0AH    ; New Line
-MOV AH,02H
-INT 21H
-
-MOV DL,0DH    ; Start New Line
-MOV AH,02H
-INT 21H
-
-; Show Month
-MOV AH,02H
-MOV DL,month2
-ADD DL,48H
-int 21h
-MOV DL,month1
-ADD DL,48H
-int 21h 
 
 ;----------------------Day-------------------------- 
 
@@ -162,8 +132,49 @@ ADD DL,48H
 int 21h
 
 
-MOV AH,4CH     ; To Terminate the Program
+
+;----------------------System Date--------------------------
+
+MOV AH,2AH    ; To get System Date
 INT 21H
+MOV AL,DL     ; Day is in DL
+AAM
+
+;MOV BH,day2
+;ADD BH,18H
+;MOV BL,day1
+;ADD BL,18H
+
+;CMP BL,AL
+;JG  D1
+;SUB AL,BL
+;RE1:
+
+;CMP BH,AH
+;JG D2
+;SUB BH,AH
+
+;RE2:
+
+
+
+
+;D1 PROC
+;ADD AL,10H
+;SUB AH,01H
+;SUB AL,BL
+
+;CALL RE1
+         
+;D2 PROC
+;ADD AH,10H
+;MOV BL,month2
+;SUB BL,01H         
+;SUB AH,BH
+;CALL RE2     
+
+
+
 
 
 END START ; set entry point and stop the assembler.
