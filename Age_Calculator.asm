@@ -1,37 +1,37 @@
 ; multi-segment executable file template.
 
-Data segment
-    ; add your data here!
-    Wel db  "Welcome$"
-    Year db "Enter Your Birth Year (--xx):$"
-    Mon db  "Enter Your Birth Month (number):$"
-    Day db  "Enter Your Birth Day:$"
+.Data segment
+; add your data here!
+WEL db  "Welcome$"
+YEAR db "Enter Your Birth Year (--xx):$"
+MON db  "Enter Your Birth Month (number):$"
+DAY db  "Enter Your Birth Day:$"
     
-ends
+ENDS
 
-stack segment
+Stack segment
     dw   128  dup(0)
-ends
+ENDS
 
-code segment
-start:
+Code segment
+Start:
 ; set segment registers:
-    mov ax, Data
-    mov ds, ax
-    mov es, ax
+MOV AX, @Data
+MOV DS, AX
 
-    ; add your code here
-            
-    lea dx, Wel
-    mov ah, 9
-    int 21h        ; output string at ds:dx
+; add your code here
+; Day
+                
+LEA DX, WEL
+MOV AH, 9
+INT 21H        ; output string at ds:dx
     
-    ; wait for any key....    
-    mov ah, 1
-    int 21h
+; wait for any key....    
+MOV ah, 1
+INT 21H
     
-    mov ax, 4c00h ; exit to operating system.
-    int 21h    
-ends
+MOV ax, 4C00H ; exit to operating system.
+INT 21H    
+ENDS
 
-end start ; set entry point and stop the assembler.
+END START ; set entry point and stop the assembler.
