@@ -6,16 +6,24 @@ M01 db  "Welcome$"
 M02 db  "Enter Your Birth Year:$"
 M03 db  "Enter Your Birth Month:$"
 M04 db  "Enter Your Birth Day:$"
+         
+day1     db ?  ; (_X)
+day2     db ?  ; (X_)
+month1   db ?  ; (_X)
+month2   db ?  ; (X_)
+year1    db ?  ; (_X)
+year2    db ?  ; (X_)
+         
+dayS1    db ?
+dayS2    db ?
+monthS1  db ?
+monthS2  db ?
+yearS1   db ?
+yearS2   db ?
 
-day1    db ?  ; (_X)
-day2    db ?  ; (X_)
-month1  db ?  ; (_X)
-month2  db ?  ; (X_)
-year1   db ?  ; (_X)
-year2   db ?  ; (X_)
-ageD    db ?  ; Day
-ageM    db ?  ; Month
-ageY    db ?  ; Year
+ageD     db ?  ; Day
+ageM     db ?  ; Month
+ageY     db ?  ; Year
 
     
 ENDS
@@ -133,48 +141,88 @@ int 21h
 
 
 
-;----------------------System Date--------------------------
+;----------------------System Date Day--------------------------
 
 MOV AH,2AH    ; To get System Date
 INT 21H
 MOV AL,DL     ; Day is in DL
 AAM
-
-;MOV BH,day2
-;ADD BH,18H
-;MOV BL,day1
-;ADD BL,18H
-
-;CMP BL,AL
-;JG  D1
-;SUB AL,BL
-;RE1:
-
-;CMP BH,AH
-;JG D2
-;SUB BH,AH
-
-;RE2:
+MOV dayS2,AH
+MOV dayS1,AL
 
 
+; Show System Day
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
+MOV AH,02H
+MOV DL,dayS2
+ADD DL,30H
+int 21h
+MOV DL,dayS1
+ADD DL,30H
+int 21h
+
+;----------------------System Date Month--------------------------
+
+MOV AH,2AH    ; To get System Date
+INT 21H
+MOV AL,DH     ; Month is in DH
+AAM
+MOV monthS2,AH
+MOV monthS1,AL
 
 
-;D1 PROC
-;ADD AL,10H
-;SUB AH,01H
-;SUB AL,BL
+; Show System Month
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
 
-;CALL RE1
-         
-;D2 PROC
-;ADD AH,10H
-;MOV BL,month2
-;SUB BL,01H         
-;SUB AH,BH
-;CALL RE2     
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
+MOV AH,02H
+MOV DL,monthS2
+ADD DL,30H
+int 21h
+MOV DL,monthS1
+ADD DL,30H
+int 21h
+
+;----------------------System Date Year--------------------------
+
+MOV AH,2AH    ; To get System Date
+INT 21H
+ADD CX,0F830H
+MOV AX,CX     ; Year is in CX
+AAM
+MOV dayS2,AH
+MOV dayS1,AL
 
 
+; Show System Year
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
 
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
 
+MOV AH,02H
+MOV DL,days2
+ADD DL,30H
+int 21h
+MOV DL,days1
+ADD DL,30H
+int 21h
+
+   
 
 END START ; set entry point and stop the assembler.
