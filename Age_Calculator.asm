@@ -1,8 +1,12 @@
 ; multi-segment executable file template.
 
-data segment
+Data segment
     ; add your data here!
-    Wel db "Welcome$"
+    Wel db  "Welcome$"
+    Year db "Enter Your Birth Year (--xx):$"
+    Mon db  "Enter Your Birth Month (number):$"
+    Day db  "Enter Your Birth Day:$"
+    
 ends
 
 stack segment
@@ -12,7 +16,7 @@ ends
 code segment
 start:
 ; set segment registers:
-    mov ax, data
+    mov ax, Data
     mov ds, ax
     mov es, ax
 
