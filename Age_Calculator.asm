@@ -102,6 +102,14 @@ SUB AL,48H    ;Convert Asci Value to Decimal
 MOV month1,AL
 
 
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
 ; Show Month
 MOV AH,02H
 MOV DL,month2
@@ -135,6 +143,14 @@ INT 21H
 SUB AL,48H    ;Convert Asci Value to Decimal
 MOV day1,AL
 
+
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
 
 ; Show Day
 MOV AH,02H
