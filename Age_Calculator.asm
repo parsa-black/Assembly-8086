@@ -5,14 +5,15 @@ M01 db  "Welcome$"
 M02 db  "Years:$"
 M03 db  "Months:$"
 M04 db  "Days:$"
+RES db 10 DUP ('$')
                  
 year     db 02
 month    db 03
 day      db 27
 
-ageD    db ?  ; Day
-ageM    db ?  ; Month
-ageY    db ?  ; Year
+ageD    dw ?  ; Day
+ageM    dw ?  ; Month
+ageY    dw ?  ; Year
 
     
 ENDS
@@ -64,16 +65,44 @@ MOV BH, DAY
 
 ;----------------------System Date Day--------------------------
 
+MOV AH,2AH    ; To get System Date
+INT 21H
+
+MOV AL,DL
+MOV AH,DAY
+CMP AH,AL
+JG  LABEL1
+SUB AL,AH
+MOV AH,00H
+MOV ageD,AX
+
+LABEL1:
+ADD AL,1EH
+SUB AL,AH
+MOV AH,00H
+MOV ageD,AX
+
+
+; Show Day
+MOV AX,ageD
+
+
+LEA SI,RES
+CALL HEX2DEC
+
+LEA DX,RES
+MOV AH,09H
+INT 21H
+
+MOV AH,4CH
+INT 21H
+
+
+
 
 
 ;----------------------System Date Month--------------------------
 
-MOV AH,2AH    ; To get System Date
-INT 21H
-
-MOV AL, MONTH
-SUB DH,AL
-MOV ageM,DH
 
 ; CX = Year
 ; DH = Month
@@ -87,9 +116,29 @@ MOV ageM,DH
 
 
 
-;;----------------------SHow Xla--------------------------.
+;;----------------------HEX TO DEC--------------------------.
 
-
+HEX2DEC PROC NEAR
+    MOV CX,0
+    MOV BX,10
+   
+LOOP1: MOV DX,0
+       DIV BX
+       ADD DL,30H
+       PUSH DX
+       INC CX
+       CMP AX,9
+       JG LOOP1
+     
+       ADD AL,30H
+       MOV [SI],AL
+     
+LOOP2: POP AX
+       INC SI
+       MOV [SI],AL
+       LOOP LOOP2
+       RET
+HEX2DEC ENDP
 
 ;;---------------------------------------------------
 
