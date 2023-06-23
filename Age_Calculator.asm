@@ -7,9 +7,9 @@ M03 db  "Months:$"
 M04 db  "Days:$"
 RES db 10 DUP ('$')
                  
-year     db 02
-month    db 03
-day      db 27
+year     db 15
+month    db 07
+day      db 17
 
 ageD    dw ?  ; Day
 ageM    dw ?  ; Month
@@ -29,18 +29,6 @@ MOV AX, @Data
 MOV DS, AX
 
 ; add your code here
-
-LEA DX, M01   ; Welcom Message
-MOV AH, 09H
-INT 21H
-
-MOV DL,0AH    ; New Line
-MOV AH,02H
-INT 21H
-
-MOV DL,0DH    ; Start New Line
-MOV AH,02H
-INT 21H
 
 ;----------------------Year--------------------------
 
@@ -83,6 +71,10 @@ JMP DAY_CALC
 
 MONTH_LABEL:
 ; YEAR - 1
+MOV DX,ageY
+DEC DX
+MOV ageY,DX 
+; ADD 12
 ADD AL,0CH
 SUB AL,AH
 MOV AH,00H
@@ -106,7 +98,11 @@ MOV ageD,AX
 JMP SHOW
 
 DAY_LABEL:
-; MONTH-1
+; Month - 1
+MOV DX,ageM
+DEC DX
+MOV ageM,DX 
+; ADD 30
 ADD AL,1EH
 SUB AL,AH
 MOV AH,00H
