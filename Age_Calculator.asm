@@ -30,40 +30,68 @@ MOV DS, AX
 
 ; add your code here
 
-;LEA DX, M01   ; Welcom Message
-;MOV AH, 09H
-;INT 21H
+LEA DX, M01   ; Welcom Message
+MOV AH, 09H
+INT 21H
 
-;MOV DL,0AH    ; New Line
-;MOV AH,02H
-;INT 21H
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
 
-;MOV DL,0DH    ; Start New Line
-;MOV AH,02H
-;INT 21H
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
 
 ;----------------------Year--------------------------
 
+MOV AH,2AH
+INT 21H
+; CX = Year
+MOV DX,CX
+MOV AX,00H
+MOV AL,year
+CMP AL,24
+JG  OLD
+ADD AX,7D0H
+SUB DX,AX
+MOV ageY,DX
+JMP MONTH_CALC
 
-MOV DL, YEAR
-
+OLD PROC NEAR
+ADD AX,76CH
+SUB DX,AX
+MOV ageY,DX
+JMP MONTH_CALC
 
 ;----------------------Month--------------------------
 
+MONTH_CALC:
+
+MOV AH,2AH
+INT 21H
+; DH = Month
+
+MOV AL,DH
+MOV AH,MONTH
+CMP AH,AL
+JG  MONTH_LABEL
+SUB AL,AH
+MOV AH,00H
+MOV ageM,AX
+JMP DAY_CALC
 
 
-MOV AL, MONTH
+MONTH_LABEL:
+; YEAR - 1
+ADD AL,0CH
+SUB AL,AH
+MOV AH,00H
+MOV ageM,AX
+JMP DAY_CALC
 
+;----------------------Day--------------------------
 
-;----------------------Day-------------------------- 
-
-
-
-MOV BH, DAY
-
-
-
-;----------------------System Date Day--------------------------
+DAY_CALC: 
 
 MOV AH,2AH    ; To get System Date
 INT 21H
@@ -71,21 +99,45 @@ INT 21H
 MOV AL,DL
 MOV AH,DAY
 CMP AH,AL
-JG  LABEL1
+JG  DAY_LABEL
 SUB AL,AH
 MOV AH,00H
 MOV ageD,AX
+JMP SHOW
 
-LABEL1:
+DAY_LABEL:
+; MONTH-1
 ADD AL,1EH
 SUB AL,AH
 MOV AH,00H
 MOV ageD,AX
+JMP SHOW
 
 
-; Show Day
-MOV AX,ageD
 
+;;----------------------SHOW Welcome---------------------------
+
+SHOW:
+LEA DX, M01   ; Welcom Message
+MOV AH, 09H
+INT 21H
+
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
+;;----------------------SHOW Year---------------------------
+
+LEA DX, M02
+MOV AH,09H
+INT 21H
+
+; Show Year
+MOV AX,ageY
 
 LEA SI,RES
 CALL HEX2DEC
@@ -94,29 +146,61 @@ LEA DX,RES
 MOV AH,09H
 INT 21H
 
-MOV AH,4CH
+;;----------------------SHOW Month---------------------------
+
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
+LEA DX, M03
+MOV AH,09H
+INT 21H
+
+; Show Month
+MOV AX,ageM
+
+LEA SI,RES
+CALL HEX2DEC
+
+LEA DX,RES
+MOV AH,09H
+INT 21H
+
+;;----------------------SHOW Day---------------------------
+
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
+LEA DX, M04
+MOV AH,09H
+INT 21H
+
+; Show Month
+MOV AX,ageD
+
+LEA SI,RES
+CALL HEX2DEC
+
+LEA DX,RES
+MOV AH,09H
+INT 21H
+
+;;----------------------End MS-DOS---------------------------
+
+MOV AH,4CH     ; To Terminate the Program
 INT 21H
 
 
-
-
-
-;----------------------System Date Month--------------------------
-
-
-; CX = Year
-; DH = Month
-; DL = Day
-
-;----------------------System Date Year--------------------------
-
-
-;;----------------------Calculate Year--------------------------
-
-
-
-
-;;----------------------HEX TO DEC--------------------------.
+;;----------------------HEX TO DEC---------------------------
 
 HEX2DEC PROC NEAR
     MOV CX,0
@@ -140,14 +224,6 @@ LOOP2: POP AX
        RET
 HEX2DEC ENDP
 
-;;---------------------------------------------------
-
-
-
 ;;----------------------END-------------------------- 
-  
-MOV AH,4CH     ; To Terminate the Program
-INT 21H
-
 
 END START ; set entry point and stop the assembler.
