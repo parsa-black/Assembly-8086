@@ -1,24 +1,29 @@
-; INT 21H (0A)
+;---------------------
+; Code By Parsa_Black |
+;---------------------
 .Model small
-.Stack 100h
-;*************
-.data 
-
-     
+.data
+M01  db "Enter String:$"
+M02  db "PRINT:$"
                                  
-          buff db 16             ; MAXIMUM IS 15 (+1 FOR ENTER)
-               db ?              ; NUMBER OF CHARCTERS
-               db 16 dup(0)      ; INPUT DATA
+buff db 16             ; MAXIMUM IS 15 (+1 FOR ENTER)
+     db ?              ; NUMBER OF CHARCTERS
+     db 16 dup(0)      ; INPUT DATA
           
-;***************************************************************
+; CODE
 .code
 main:
-         MOV AX , @data
-         MOV DS , AX
-         
-         MOV AH , 0AH            ; INSTURCTION
-         MOV DX , offset buff    ; READ
-         INT 21H
+MOV AX, @data
+MOV DS, AX
+
+LEA DX,M01   ; Message
+MOV AH,09H
+INT 21H
+
+                  
+MOV AH,0AH            ; INSTURCTION
+MOV DX,offset buff    ; READ
+INT 21H
 
 ; CHANGE CHR(13) BY '$'
             MOV SI , offset buff+1      ;NUMBER OF CHR ENTERD
@@ -32,12 +37,32 @@ main:
 
 ; PRINT STRING
 
-           MOV AH , 9
-           MOV DX , offset buff+2       ;start after 2
-           INT 21H
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
+LEA DX,M02   ; Print Message
+MOV AH,09H
+INT 21H
+
+MOV DL,0AH    ; New Line
+MOV AH,02H
+INT 21H
+
+MOV DL,0DH    ; Start New Line
+MOV AH,02H
+INT 21H
+
+
+MOV AH ,09H
+MOV DX ,offset buff+2       ;start after 2
+INT 21H
+         
+MOV AH,4CH
+INT 21H
            
-           
-           MOV AH , 4CH
-           INT 21H
-           
-           end main
+END main
