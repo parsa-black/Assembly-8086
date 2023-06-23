@@ -7,7 +7,7 @@ M03 db  "Months:$"
 M04 db  "Days:$"
 RES db 10 DUP ('$')
                  
-year     db 15
+year     db 98
 month    db 07
 day      db 17
 
@@ -45,7 +45,7 @@ SUB DX,AX
 MOV ageY,DX
 JMP MONTH_CALC
 
-OLD PROC NEAR
+OLD:
 ADD AX,76CH
 SUB DX,AX
 MOV ageY,DX
@@ -60,7 +60,7 @@ INT 21H
 ; DH = Month
 
 MOV AL,DH
-MOV AH,MONTH
+MOV AH,month
 CMP AH,AL
 JG  MONTH_LABEL
 SUB AL,AH
@@ -89,7 +89,7 @@ MOV AH,2AH    ; To get System Date
 INT 21H
 
 MOV AL,DL
-MOV AH,DAY
+MOV AH,day
 CMP AH,AL
 JG  DAY_LABEL
 SUB AL,AH
