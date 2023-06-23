@@ -1,3 +1,6 @@
+;---------------------
+; Code By Parsa_Black |
+;---------------------
 .model small
 .Data
 ; add your data here!
@@ -7,9 +10,9 @@ M03 db  "Months:$"
 M04 db  "Days:$"
 RES db 10 DUP ('$')
                  
-year     db 98
-month    db 07
-day      db 17
+year     db 98 ; input BirthYear --xx
+month    db 07 ; input BirthMonth (BY order Start 1)
+day      db 17 ; input BirthDay   
 
 ageD    dw ?  ; Day
 ageM    dw ?  ; Month
@@ -128,7 +131,7 @@ INT 21H
 
 ;;----------------------SHOW Year---------------------------
 
-LEA DX, M02
+LEA DX, M02   ; Year message
 MOV AH,09H
 INT 21H
 
@@ -152,7 +155,7 @@ MOV DL,0DH    ; Start New Line
 MOV AH,02H
 INT 21H
 
-LEA DX, M03
+LEA DX, M03   ; Month message
 MOV AH,09H
 INT 21H
 
@@ -176,7 +179,7 @@ MOV DL,0DH    ; Start New Line
 MOV AH,02H
 INT 21H
 
-LEA DX, M04
+LEA DX, M04   ; Day message
 MOV AH,09H
 INT 21H
 
