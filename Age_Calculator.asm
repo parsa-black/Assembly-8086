@@ -10,9 +10,9 @@ M03 db  "Months:$"
 M04 db  "Days:$"
 RES db 10 DUP ('$')
                  
-year     db 98 ; input BirthYear --xx
-month    db 07 ; input BirthMonth (BY order Start 1)
-day      db 17 ; input BirthDay   
+year     db 02 ; input BirthYear --xx
+month    db 03 ; input BirthMonth (BY order Start 1)
+day      db 27 ; input BirthDay   
 
 ageD    dw ?  ; Day
 ageM    dw ?  ; Month
@@ -41,7 +41,7 @@ INT 21H
 MOV DX,CX
 MOV AX,00H
 MOV AL,year
-CMP AL,24
+CMP AL,24     ; (in 2023 is 24)
 JG  OLD
 ADD AX,7D0H
 SUB DX,AX
