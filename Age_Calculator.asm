@@ -10,8 +10,8 @@ M03 db  "Months:$"
 M04 db  "Days:$"
 RES db 10 DUP ('$')
                  
-year     db 02 ; input BirthYear --xx
-month    db 03 ; input BirthMonth (BY order Start 1)
+year     db 03 ; input BirthYear --xx
+month    db 05 ; input BirthMonth (BY order Start 1)
 day      db 27 ; input BirthDay   
 
 ageD    dw ?  ; Day
