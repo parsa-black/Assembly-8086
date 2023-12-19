@@ -1,16 +1,17 @@
 ;---------------------
 ; Code By Parsa_Black |
 ;---------------------
-.Model small
-.data
-M01  db "Enter String:$"
-M02  db "PRINT:$"
+.Model small 
+;---------------------
+.data                 
+    M01  db "Enter String:$"
+    M02  db "PRINT:$"
                                  
-buff db 16             ; MAXIMUM IS 15 (+1 FOR ENTER)
-     db ?              ; NUMBER OF CHARCTERS
-     db 16 dup(0)      ; INPUT DATA
+    buff db 16             ; MAXIMUM IS 15 (+1 FOR ENTER)
+         db ?              ; NUMBER OF CHARCTERS
+         db 16 dup(0)      ; INPUT DATA
           
-; CODE
+;---------------------
 .code
 main:
 MOV AX, @data
